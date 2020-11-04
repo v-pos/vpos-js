@@ -1,0 +1,22 @@
+{
+  "name": "vpos",
+  "version": "1.0.0",
+  "description": "vPOS JavaScript library that allows to communicate with multiple payment providers in Angola and abroad",
+  "main": "vpos.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nextbss/vpos-npmjs.git"
+  },
+  "author": "Sergio Maziano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nextbss/vpos-npmjs/issues"
+  },
+  "homepage": "https://github.com/nextbss/vpos-npmjs#readme",
+  "dependencies": {
+    "axios": "^0.21.0"
+  }
+}
