@@ -4,7 +4,7 @@
   "description": "vPOS JavaScript library that allows to communicate with multiple payment providers in Angola and abroad",
   "main": "vpos.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha" 
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/nextbss/vpos-npmjs#readme",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.0"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1",
     "uuid": "^8.3.1"
   }
 }
