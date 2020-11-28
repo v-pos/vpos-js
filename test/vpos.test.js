@@ -86,4 +86,29 @@ describe('vPOS', () => {
       });
     });
   });
+
+  describe('Requests', () => {
+    describe('Positives', () => {
+      it('should get a running single request status', async () => {
+        let response = await merchant.newPaymentTransaction({amount: "123.45", customer: "925888553"});
+
+        refundId = response.location.substring(17);
+
+        response = await merchant.getRequest({requestId: refundId});
+        assert.equal(response.status, 200);
+      });
+
+      it('should get a completed single request status', async () => {
+        let response = await merchant.getRequest({requestId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
+        assert.equal(response.status, 303);
+      });
+    });
+
+    describe('Negatives', () => {
+      it('should not get a single request status if token is invalid', async () => {
+        let response = await merchant.getRequest({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht", vposToken: "1jYQryG3Qo4nzaOKgJxzWDs25H"});
+        assert.equal(response.status, 401);
+      });
+    });
+  });
 });
