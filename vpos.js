@@ -69,7 +69,7 @@ module.exports = class Vpos {
     });
   }
 
-  newPaymentTransaction({
+  newPayment({
     amount,
     posId = GPO_POS_ID,
     customer,
@@ -99,7 +99,7 @@ module.exports = class Vpos {
     });
   }
 
-  newRefundTransaction({
+  newRefund({
     parentTransactionId,
     supervisorCard = GPO_SUPERVISOR_CARD,
     callbackUrl = REFUND_CALLBACK_URL,
