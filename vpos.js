@@ -21,11 +21,11 @@ module.exports = class Vpos {
 
   getTransaction({
     transactionId,
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
 
-    var request = this.request();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    let request = this.request();
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.get(url + '/api/v1/transactions/' + transactionId, request)
     .then(response => {
@@ -44,11 +44,11 @@ module.exports = class Vpos {
   }
 
   getTransactions({
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
 
-    const request = this.request();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    let request = this.request();
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.get(url + '/api/v1/transactions', request)
     .then(response => {
@@ -72,13 +72,13 @@ module.exports = class Vpos {
     posId = GPO_POS_ID,
     customer,
     callback_url = PAYMENT_CALLBACK_URL,
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
     let body = {type: "payment", pos_id: posId, mobile: customer, amount: amount, callback_url: callback_url}
 
-    const request = this.request();
+    let request = this.request();
     request.headers['Idempontency-Key'] = uuidv4();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.post(url + '/api/v1/transactions', body, request)
     .then(response => {
@@ -101,13 +101,13 @@ module.exports = class Vpos {
     parentTransactionId,
     supervisorCard = GPO_SUPERVISOR_CARD,
     callbackUrl = REFUND_CALLBACK_URL,
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
-    let body = {type: "refund", parent_transaction_id: parentTransactionId, supervisor_card: supervisorCard, callback_url: callbackUrl}
+    var body = {type: "refund", parent_transaction_id: parentTransactionId, supervisor_card: supervisorCard, callback_url: callbackUrl}
 
-    const request = this.request();
+    let request = this.request();
     request.headers['Idempontency-Key'] = uuidv4();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.post(url + '/api/v1/transactions', body, request)
     .then(response => {
@@ -128,11 +128,11 @@ module.exports = class Vpos {
 
   getRequest({
     requestId,
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
 
-    const request = this.request();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    let request = this.request();
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.get(url + '/api/v1/requests/' + requestId, request)
     .then(response => {
