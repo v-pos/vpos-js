@@ -90,7 +90,7 @@ describe('vPOS', () => {
   describe('Requests', () => {
     describe('Positives', () => {
       it('should get a running single request status', async () => {
-        let response = await merchant.newPaymentTransaction({amount: "123.45", customer: "925888553"});
+        let response = await merchant.newPayment({amount: "123.45", customer: "925888553"});
 
         refundId = response.location.substring(17);
 
