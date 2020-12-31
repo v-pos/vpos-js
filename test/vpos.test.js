@@ -53,7 +53,7 @@ describe('vPOS', () => {
         assert.equal(response.status, 202);
 
         refundId = response.location.substring(17);
-        refundTransaction = await merchant.getTransaction({transactionId: refundId});
+        refundTransaction = await merchant.getTransaction({Id: refundId});
 
         assert.equal(refundTransaction.data.status, "rejected")
         // TODO: This test should have been 2007. Has to be refactored as soon we have the mock server
@@ -69,19 +69,19 @@ describe('vPOS', () => {
         assert.equal(response.status, 200);
       });
       it('should get a single transaction', async () => {
-        let response = await merchant.getTransaction({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
+        let response = await merchant.getTransaction({Id: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
         assert.equal(response.status, 200);
       });
     });
 
     describe('Negatives', () => {
       it('should not get a non existent single transaction', async () => {
-        let response = await merchant.getTransaction({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25H"});
+        let response = await merchant.getTransaction({Id: "1jYQryG3Qo4nzaOKgJxzWDs25H"});
         assert.equal(response.status, 404);
       });
 
       it('should not get a single transaction if token is invalid', async () => {
-        let response = await merchant.getTransaction({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25H", token: "1jYQryG3Qo4nzaO"});
+        let response = await merchant.getTransaction({Id: "1jYQryG3Qo4nzaOKgJxzWDs25H", token: "1jYQryG3Qo4nzaO"});
         assert.equal(response.status, 401);
       });
     });
@@ -92,7 +92,7 @@ describe('vPOS', () => {
       it('should get a running single request status', async () => {
         let response = await merchant.newPayment({amount: "123.45", customer: "925888553"});
 
-        refundId = response.location.substring(17);
+        refundId = merchant.getRequestId({response: response})
 
         response = await merchant.getRequest({requestId: refundId});
         assert.equal(response.status, 200);
@@ -106,7 +106,7 @@ describe('vPOS', () => {
 
     describe('Negatives', () => {
       it('should not get a single request status if token is invalid', async () => {
-        let response = await merchant.getRequest({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht", token: "1jYQryG3Qo4nzaOKgJxzWDs25H"});
+        let response = await merchant.getRequest({requestId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht", token: "1jYQryG3Qo4nzaOKgJxzWDs25H"});
         assert.equal(response.status, 401);
       });
     });

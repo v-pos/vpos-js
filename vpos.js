@@ -7,6 +7,7 @@ const GPO_SUPERVISOR_CARD = process.env.GPO_SUPERVISOR_CARD;
 const PAYMENT_CALLBACK_URL = process.env.VPOS_PAYMENT_CALLBACK_URL;
 const REFUND_CALLBACK_URL = process.env.VPOS_REFUND_CALLBACK_URL;
 const MERCHANT_VPOS_TOKEN = process.env.MERCHANT_VPOS_TOKEN;
+const LOCATION = 17;
 
 module.exports = class Vpos {
   request() {
@@ -20,14 +21,14 @@ module.exports = class Vpos {
   }
 
   getTransaction({
-    transactionId,
+    Id,
     token = MERCHANT_VPOS_TOKEN
   }) {
 
     let request = this.request();
     request.headers['Authorization'] = 'Bearer ' + token;
 
-    return axios.get(url + '/api/v1/transactions/' + transactionId, request)
+    return axios.get(url + '/api/v1/transactions/' + Id, request)
     .then(response => {
       return {
         status: response.status,
@@ -129,6 +130,14 @@ module.exports = class Vpos {
         details: error.response.data
       }
     });
+  }
+
+  getRequestId({response}) {
+    if (response.status === 202) {
+      return response.location.substring(LOCATION);
+    } else {
+      return response.location.substring(LOCATION);
+    }
   }
 
   getRequest({
