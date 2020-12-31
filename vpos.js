@@ -77,7 +77,7 @@ module.exports = class Vpos {
     let body = {type: "payment", pos_id: posId, mobile: customer, amount: amount, callback_url: callback_url}
 
     let request = this.request();
-    request.headers['Idempontency-Key'] = uuidv4();
+    request.headers['Idempotency-Key'] = uuidv4();
     request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.post(url + '/api/v1/transactions', body, request)
@@ -103,10 +103,15 @@ module.exports = class Vpos {
     callbackUrl = REFUND_CALLBACK_URL,
     token = MERCHANT_VPOS_TOKEN
   }) {
-    var body = {type: "refund", parent_transaction_id: parentTransactionId, supervisor_card: supervisorCard, callback_url: callbackUrl}
+    let body = {
+      type: "refund",
+      parent_transaction_id: parentTransactionId,
+      supervisor_card: supervisorCard,
+      callback_url: callbackUrl
+    };
 
     let request = this.request();
-    request.headers['Idempontency-Key'] = uuidv4();
+    request.headers['Idempotency-Key'] = uuidv4();
     request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.post(url + '/api/v1/transactions', body, request)
