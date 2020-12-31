@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
-const url = process.env.VPOS_ENVIRONMENT == "PRD" ? "https://api.vpos.ao" : "https://sandbox.vpos.ao";
+const url = process.env.VPOS_ENVIRONMENT === "PRD" ? "https://api.vpos.ao" : "https://sandbox.vpos.ao";
 
 const GPO_POS_ID = process.env.GPO_POS_ID;
 const GPO_SUPERVISOR_CARD = process.env.GPO_SUPERVISOR_CARD;
@@ -10,24 +10,22 @@ const MERCHANT_VPOS_TOKEN = process.env.MERCHANT_VPOS_TOKEN;
 
 module.exports = class Vpos {
   request() {
-    var request = {
+    return {
       headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
       },
       maxRedirects: 0
-    }
-
-    return request;
+    };
   }
 
   getTransaction({
     transactionId,
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
 
-    var request = this.request();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    let request = this.request();
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.get(url + '/api/v1/transactions/' + transactionId, request)
     .then(response => {
@@ -46,11 +44,11 @@ module.exports = class Vpos {
   }
 
   getTransactions({
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
 
-    var request = this.request();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    let request = this.request();
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.get(url + '/api/v1/transactions', request)
     .then(response => {
@@ -74,13 +72,13 @@ module.exports = class Vpos {
     posId = GPO_POS_ID,
     customer,
     callback_url = PAYMENT_CALLBACK_URL,
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
     let body = {type: "payment", pos_id: posId, mobile: customer, amount: amount, callback_url: callback_url}
 
-    var request = this.request();
-    request.headers['Idempontency-Key'] = uuidv4();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    let request = this.request();
+    request.headers['Idempotency-Key'] = uuidv4();
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.post(url + '/api/v1/transactions', body, request)
     .then(response => {
@@ -103,13 +101,18 @@ module.exports = class Vpos {
     parentTransactionId,
     supervisorCard = GPO_SUPERVISOR_CARD,
     callbackUrl = REFUND_CALLBACK_URL,
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
-    let body = {type: "refund", parent_transaction_id: parentTransactionId, supervisor_card: supervisorCard, callback_url: callbackUrl}
+    let body = {
+      type: "refund",
+      parent_transaction_id: parentTransactionId,
+      supervisor_card: supervisorCard,
+      callback_url: callbackUrl
+    };
 
-    var request = this.request();
-    request.headers['Idempontency-Key'] = uuidv4();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    let request = this.request();
+    request.headers['Idempotency-Key'] = uuidv4();
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.post(url + '/api/v1/transactions', body, request)
     .then(response => {
@@ -130,15 +133,15 @@ module.exports = class Vpos {
 
   getRequest({
     requestId,
-    vposToken = MERCHANT_VPOS_TOKEN
+    token = MERCHANT_VPOS_TOKEN
   }) {
 
-    var request = this.request();
-    request.headers['Authorization'] = 'Bearer ' + vposToken;
+    let request = this.request();
+    request.headers['Authorization'] = 'Bearer ' + token;
 
     return axios.get(url + '/api/v1/requests/' + requestId, request)
     .then(response => {
-      if (response.status == 200) {
+      if (response.status === 200) {
         return {
           status: response.status,
           message: response.statusText,
