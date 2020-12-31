@@ -59,7 +59,7 @@ Retrieves a transaction given a valid transaction ID.
 
 ```javascript
 let merchant = new Vpos();
-let response = await merchant.getTransaction({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
+let response = await merchant.getTransaction({Id: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
 ```
 
 | Argument | Description | Type |
@@ -105,7 +105,7 @@ let response = await merchant.getRequest({requestId: "1jYQryG3Qo4nzaOKgJxzWDs25H
 
 ```javascript
 let payment = await merchant.newPayment({amount: "123.45", customer: "915889553"});
-refundId = payment.location.substring(17);
+refundId = merchant.getRequestId({response: payment})
 let response = await merchant.getRequest({requestId: refundId});
 ```
 
