@@ -1,21 +1,21 @@
 {
   "name": "vpos",
   "version": "1.0.0",
-  "description": "vPOS JavaScript library that allows to communicate with multiple payment providers in Angola and abroad",
+  "description": "The one stop shop for online payments in Angola, allowing you to process payments requests from EMIS GPO through vPOS.",
   "main": "vpos.js",
   "scripts": {
-    "test": "mocha" 
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nextbss/vpos-npmjs.git"
+    "url": "git+https://github.com/nextbss/vpos-js.git"
   },
   "author": "Sergio Maziano",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nextbss/vpos-npmjs/issues"
+    "url": "https://github.com/nextbss/vpos-js/issues"
   },
-  "homepage": "https://github.com/nextbss/vpos-npmjs#readme",
+  "homepage": "https://github.com/nextbss/vpos-js#readme",
   "dependencies": {
     "axios": "^0.21.0"
   },
