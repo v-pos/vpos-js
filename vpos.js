@@ -10,15 +10,13 @@ const MERCHANT_VPOS_TOKEN = process.env.MERCHANT_VPOS_TOKEN;
 
 module.exports = class Vpos {
   request() {
-    var request = {
+    return {
       headers: {
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
+        'Content-type': 'application/json',
+        'Accept': 'application/json'
       },
       maxRedirects: 0
-    }
-
-    return request;
+    };
   }
 
   getTransaction({
