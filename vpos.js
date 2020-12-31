@@ -20,14 +20,14 @@ module.exports = class Vpos {
   }
 
   getTransaction({
-    transactionId,
+    Id,
     token = MERCHANT_VPOS_TOKEN
   }) {
 
     let request = this.request();
     request.headers['Authorization'] = 'Bearer ' + token;
 
-    return axios.get(url + '/api/v1/transactions/' + transactionId, request)
+    return axios.get(url + '/api/v1/transactions/' + Id, request)
     .then(response => {
       return {
         status: response.status,
