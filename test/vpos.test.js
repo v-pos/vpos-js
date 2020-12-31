@@ -18,7 +18,7 @@ describe('vPOS', () => {
 
     describe('Negatives', () => {
       it('should not create a new payment request transaction if token is invalid', async () => {
-        let response = await merchant.newPayment({amount: "123.45", customer: "925888553", vposToken: "kjsdfhskdjfhskjd"});
+        let response = await merchant.newPayment({amount: "123.45", customer: "925888553", token: "kjsdfhskdjfhskjd"});
         assert.equal(response.status, 401);
       });
       it('should not create a new payment request transaction if customer format is invalid', async () => {
@@ -41,7 +41,7 @@ describe('vPOS', () => {
     });
     describe('Negatives', () => {
       it('should not create a new refund request transaction if token is invalid', async () => {
-        response = await merchant.newRefund({parentTransactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Hv", vposToken: "kjsdfhskdjfhskjd"});
+        response = await merchant.newRefund({parentTransactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Hv", token: "kjsdfhskdjfhskjd"});
         assert.equal(response.status, 401);
       });
       it('should not create a new refund request transaction if parent_transaction_id is not present', async () => {
@@ -81,7 +81,7 @@ describe('vPOS', () => {
       });
 
       it('should not get a single transaction if token is invalid', async () => {
-        let response = await merchant.getTransaction({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25H", vposToken: "1jYQryG3Qo4nzaOKgJxzWDs25H"});
+        let response = await merchant.getTransaction({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25H", token: "1jYQryG3Qo4nzaO"});
         assert.equal(response.status, 401);
       });
     });
@@ -106,7 +106,7 @@ describe('vPOS', () => {
 
     describe('Negatives', () => {
       it('should not get a single request status if token is invalid', async () => {
-        let response = await merchant.getRequest({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht", vposToken: "1jYQryG3Qo4nzaOKgJxzWDs25H"});
+        let response = await merchant.getRequest({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht", token: "1jYQryG3Qo4nzaOKgJxzWDs25H"});
         assert.equal(response.status, 401);
       });
     });
