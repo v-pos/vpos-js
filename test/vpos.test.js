@@ -11,22 +11,22 @@ describe('vPOS', () => {
   describe('Payments', () => {
     describe('Positives', () => {
       it('should create a new payment request transaction', async () => {
-        let response = await merchant.newPaymentTransaction({amount: "123.45", customer: "925888553"});
+        let response = await merchant.newPayment({amount: "123.45", customer: "925888553"});
         assert.equal(response.status, 202);
       });
     });
 
     describe('Negatives', () => {
       it('should not create a new payment request transaction if token is invalid', async () => {
-        let response = await merchant.newPaymentTransaction({amount: "123.45", customer: "925888553", vposToken: "kjsdfhskdjfhskjd"});
+        let response = await merchant.newPayment({amount: "123.45", customer: "925888553", vposToken: "kjsdfhskdjfhskjd"});
         assert.equal(response.status, 401);
       });
       it('should not create a new payment request transaction if customer format is invalid', async () => {
-        let response = await merchant.newPaymentTransaction({amount: "123.45", customer: "92588855"});
+        let response = await merchant.newPayment({amount: "123.45", customer: "92588855"});
         assert.equal(response.status, 400);
       });
       it('should not create a new payment request transaction if amount format is invalid', async () => {
-        let response = await merchant.newPaymentTransaction({amount: "123.45.67", customer: "925888553"});
+        let response = await merchant.newPayment({amount: "123.45.67", customer: "925888553"});
         assert.equal(response.status, 400);
       });
     });
@@ -35,21 +35,21 @@ describe('vPOS', () => {
   describe('Refunds', () => {
     describe('Positives', () => {
       it('should create a new refund request transaction', async () => {
-        let response = await merchant.newRefundTransaction({parentTransactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Hv"});
+        let response = await merchant.newRefund({parentTransactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Hv"});
         assert.equal(response.status, 202);
       });
     });
     describe('Negatives', () => {
       it('should not create a new refund request transaction if token is invalid', async () => {
-        response = await merchant.newRefundTransaction({parentTransactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Hv", vposToken: "kjsdfhskdjfhskjd"});
+        response = await merchant.newRefund({parentTransactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Hv", vposToken: "kjsdfhskdjfhskjd"});
         assert.equal(response.status, 401);
       });
       it('should not create a new refund request transaction if parent_transaction_id is not present', async () => {
-        let response = await merchant.newRefundTransaction({});
+        let response = await merchant.newRefund({});
         assert.equal(response.status, 400);
       });
       it('should not create a new refund request transaction if supervisor_card is invalid', async () => {
-        let response = await merchant.newRefundTransaction({parentTransactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Hv", supervisorCard: "12345678910111213"});
+        let response = await merchant.newRefund({parentTransactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Hv", supervisorCard: "12345678910111213"});
         assert.equal(response.status, 202);
 
         refundId = response.location.substring(17);
