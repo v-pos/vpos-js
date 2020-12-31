@@ -104,6 +104,7 @@ let response = await merchant.getRequest({requestId: "1jYQryG3Qo4nzaOKgJxzWDs25H
 ##### Complete `getRequest()` example with additional Context
 
 ```javascript
+let merchant = new Vpos();
 let payment = await merchant.newPayment({amount: "123.45", customer: "915889553"});
 refundId = merchant.getRequestId({response: payment})
 let response = await merchant.getRequest({requestId: refundId});
