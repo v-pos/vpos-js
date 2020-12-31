@@ -1,10 +1,10 @@
 {
   "name": "vpos",
   "version": "1.0.0",
-  "description": "vPOS JavaScript library that allows to communicate with multiple payment providers in Angola and abroad",
+  "description": "The one stop shop for online payments in Angola, allowing you to process payments requests from EMIS GPO through vPOS.",
   "main": "vpos.js",
   "scripts": {
-    "test": "mocha" 
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
