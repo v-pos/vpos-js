@@ -1,11 +1,11 @@
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
-const url = process.env.VPOS_PROFILE == "PRD" ? "https://api.vpos.ao" : "https://sandbox.vpos.ao";
+const url = process.env.VPOS_ENVIRONMENT == "PRD" ? "https://api.vpos.ao" : "https://sandbox.vpos.ao";
 
 const GPO_POS_ID = process.env.GPO_POS_ID;
 const GPO_SUPERVISOR_CARD = process.env.GPO_SUPERVISOR_CARD;
-const PAYMENT_CALLBACK_URL = process.env.PAYMENT_CALLBACK_URL;
-const REFUND_CALLBACK_URL = process.env.REFUND_CALLBACK_URL;
+const PAYMENT_CALLBACK_URL = process.env.VPOS_PAYMENT_CALLBACK_URL;
+const REFUND_CALLBACK_URL = process.env.VPOS_REFUND_CALLBACK_URL;
 const MERCHANT_VPOS_TOKEN = process.env.MERCHANT_VPOS_TOKEN;
 
 module.exports = class Vpos {
