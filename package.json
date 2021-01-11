@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "description": "The one stop shop for online payments in Angola, allowing you to process payments requests from EMIS GPO through vPOS.",
   "main": "vpos.js",
+  "keywords": 
+        ["vpos", 
+        "vpos-php",
+        "nextbss",
+        "payments", 
+        "angola"
+  ],
   "scripts": {
     "test": "mocha"
   },
