@@ -22,9 +22,9 @@ Does interacting directly with our API service sound better to you?
 See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
+```shell
 npm install vpos
 ```
-
 ### Configuration
 This ruby library requires you set up the following environment variables on your machine before
 interacting with the API using this library:
