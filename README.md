@@ -22,6 +22,7 @@ Does interacting directly with our API service sound better to you?
 See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 
 ## Installation
+```
 npm install vpos
 ```
 
