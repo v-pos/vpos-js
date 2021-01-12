@@ -25,6 +25,7 @@ See our documentation on [developer.vpos.ao](https://developer.vpos.ao)
 ```shell
 npm install vpos
 ```
+
 ### Configuration
 This ruby library requires you set up the following environment variables on your machine before
 interacting with the API using this library:
@@ -36,7 +37,7 @@ interacting with the API using this library:
 | `MERCHANT_VPOS_TOKEN` | The API token provided by vPOS | true |
 | `PAYMENT_CALLBACK_URL` | The URL that will handle payment notifications | false |
 | `REFUND_CALLBACK_URL` | The URL that will handle refund notifications | false |
-| `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"prd"` for `production`.  | false |
+| `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | false |
 
 Don't have this information? [Talk to us](suporte@vpos.ao)
 
