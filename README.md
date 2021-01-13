@@ -50,6 +50,8 @@ The next section will show the various payment actions that can be performed by 
 This endpoint retrieves all transactions.
 
 ```javascript
+const Vpos = require("vpos")
+
 let merchant = new Vpos();
 let transactions = await merchant.getTransactions({});
 ```
@@ -58,6 +60,8 @@ let transactions = await merchant.getTransactions({});
 Retrieves a transaction given a valid transaction ID.
 
 ```javascript
+const Vpos = require("vpos")
+
 let merchant = new Vpos();
 let response = await merchant.getTransaction({Id: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
 ```
@@ -71,6 +75,8 @@ Creates a new payment transaction given a valid mobile number associated with a 
 and a valid amount.
 
 ```javascript
+const Vpos = require("vpos")
+
 let merchant = new Vpos();
 let payment = await merchant.newPayment({amount: "123.45", customer: "915898553"});
 ```
@@ -84,6 +90,8 @@ let payment = await merchant.newPayment({amount: "123.45", customer: "915898553"
 Given an existing `parent_transaction_id`, request a refund.
 
 ```javascript
+const Vpos = require("vpos")
+
 let merchant = new Vpos();
 let response = await merchant.newRefund({parentTransactionId: "1kTFGhJH8i58uD9MdJpMjWnoE"});
 ```
@@ -98,12 +106,16 @@ Poll the status of a transaction given a valid `request_id`.
 Note: The `request_id` in this context is essentially the `transaction_id` of an existing request. 
 
 ```javascript
+const Vpos = require("vpos")
+
 let merchant = new Vpos();
 let response = await merchant.getRequest({requestId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
 ```
 ##### Complete `getRequest()` example with additional Context
 
 ```javascript
+const Vpos = require("vpos")
+
 let merchant = new Vpos();
 let payment = await merchant.newPayment({amount: "123.45", customer: "915889553"});
 refundId = merchant.getRequestId({response: payment})
