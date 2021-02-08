@@ -31,13 +31,13 @@ module.exports = class Vpos {
     return axios.get(url + '/api/v1/transactions/' + Id, request)
     .then(response => {
       return {
-        status: response.status,
+        status_code: response.status,
         message: response.statusText,
         data: response.data
       }
     }) .catch(error => {
       return {
-        status: error.response.status,
+        status_code: error.response.status,
         message: error.response.statusText,
         details: error.response.data
       }
@@ -54,14 +54,14 @@ module.exports = class Vpos {
     return axios.get(url + '/api/v1/transactions', request)
     .then(response => {
       return {
-        status: response.status,
+        status_code: response.status,
         message: response.statusText,
         data: response.data
       }
     })
     .catch(error => {
       return {
-        status: error.response.status,
+        status_code: error.response.status,
         message: error.response.statusText,
         details: error.response.data
       }
@@ -84,14 +84,14 @@ module.exports = class Vpos {
     return axios.post(url + '/api/v1/transactions', body, request)
     .then(response => {
       return {
-        status: response.status,
+        status_code: response.status,
         message: response.statusText,
         location: response.headers.location
       }
     })
     .catch(error => {
       return {
-        status: error.response.status,
+        status_code: error.response.status,
         message: error.response.statusText,
         details: error.response.data
       }
@@ -118,14 +118,14 @@ module.exports = class Vpos {
     return axios.post(url + '/api/v1/transactions', body, request)
     .then(response => {
       return {
-        status: response.status,
+        status_code: response.status,
         message: response.statusText,
         location: response.headers.location
       }
     })
     .catch(error => {
       return {
-        status: error.response.status,
+        status_code: error.response.status,
         message: error.response.statusText,
         details: error.response.data
       }
@@ -133,7 +133,7 @@ module.exports = class Vpos {
   }
 
   getRequestId({response}) {
-    if (response.status === 202) {
+    if (response.status_code === 202) {
       return response.location.substring(LOCATION);
     } else {
       return response.location.substring(LOCATION);
@@ -152,13 +152,13 @@ module.exports = class Vpos {
     .then(response => {
       if (response.status === 200) {
         return {
-          status: response.status,
+          status_code: response.status,
           message: response.statusText,
           data: response.data
         }
       } else {
         return {
-          status: response.status,
+          status_code: response.status,
           message: response.statusText,
           location: response.headers.location
         }
@@ -166,7 +166,7 @@ module.exports = class Vpos {
     })
     .catch(error => {
       return {
-        status: error.response.status,
+        status_code: error.response.status,
         message: error.response.statusText,
         details: error.response.data
       }
