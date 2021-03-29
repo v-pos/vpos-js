@@ -5,8 +5,8 @@ const GPO_POS_ID = process.env.GPO_POS_ID;
 const GPO_SUPERVISOR_CARD = process.env.GPO_SUPERVISOR_CARD;
 const PAYMENT_CALLBACK_URL = process.env.PAYMENT_CALLBACK_URL;
 const REFUND_CALLBACK_URL = process.env.REFUND_CALLBACK_URL;
-const VPOS_API_KEY = process.env.VPOS_API_KEY;
-const VPOS_PROFILE = process.env.VPOS_PROFILE;
+const MERCHANT_VPOS_TOKEN = process.env.MERCHANT_VPOS_TOKEN;
+const VPOS_ENVIRONMENT = process.env.VPOS_PROFILE;
 const LOCATION = 17;
 
 module.exports = class Vpos {
@@ -30,9 +30,9 @@ module.exports = class Vpos {
   }
 
   getTransaction({
-    profile = VPOS_PROFILE,
+    profile = VPOS_ENVIRONMENT,
     transactionId,
-    token = VPOS_API_KEY,
+    token = MERCHANT_VPOS_TOKEN,
   }) {
 
     const request = Vpos.request();
@@ -56,8 +56,8 @@ module.exports = class Vpos {
   }
 
   getTransactions({
-    profile = VPOS_PROFILE,
-    token = VPOS_API_KEY
+    profile = VPOS_ENVIRONMENT,
+    token = MERCHANT_VPOS_TOKEN
   }) {
 
     const request = Vpos.request();
@@ -81,12 +81,12 @@ module.exports = class Vpos {
   }
 
   newPayment({
-    profile = VPOS_PROFILE,
+    profile = VPOS_ENVIRONMENT,
     amount,
     posId = GPO_POS_ID,
     customer,
     callback_url = PAYMENT_CALLBACK_URL,
-    token = VPOS_API_KEY
+    token = MERCHANT_VPOS_TOKEN
   }) {
     let body = {type: "payment", pos_id: posId, mobile: customer, amount: amount, callback_url: callback_url}
 
@@ -112,11 +112,11 @@ module.exports = class Vpos {
   }
 
   newRefund({
-    profile = VPOS_PROFILE,
+    profile = VPOS_ENVIRONMENT,
     parentTransactionId,
     supervisorCard = GPO_SUPERVISOR_CARD,
     callbackUrl = REFUND_CALLBACK_URL,
-    token = VPOS_API_KEY
+    token = MERCHANT_VPOS_TOKEN
   }) {
     let body = {
       type: "refund",
@@ -155,9 +155,9 @@ module.exports = class Vpos {
   }
 
   getRequest({
-    profile = VPOS_PROFILE,
+    profile = VPOS_ENVIRONMENT,
     requestId,
-    token = VPOS_API_KEY
+    token = MERCHANT_VPOS_TOKEN
   }) {
 
     const request = Vpos.request();
