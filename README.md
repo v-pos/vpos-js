@@ -63,12 +63,12 @@ Retrieves a transaction given a valid transaction ID.
 const Vpos = require("vpos")
 
 let merchant = new Vpos();
-let response = await merchant.getTransaction({Id: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
+let response = await merchant.getTransaction({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
 ```
 
 | Argument | Description | Type |
 | --- | --- | --- |
-| `id` | An existing Transaction ID | `string`
+| `transactionId` | An existing Transaction ID | `string`
 
 ### New Payment Transaction
 Creates a new payment transaction given a valid mobile number associated with a `MULTICAIXA` account
@@ -124,7 +124,7 @@ let response = await merchant.getRequest({requestId: refundId});
 
 | Argument | Description | Type |
 | --- | --- | --- |
-| `request_id` | The ID of transaction you wish to poll | `string`
+| `requestId` | The ID of transaction you wish to poll | `string`
 
 ### Have any doubts?
 In case of any doubts, bugs, or the like, please leave an issue. We would love to help.
