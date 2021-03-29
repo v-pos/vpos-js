@@ -4,7 +4,7 @@
   "description": "vPOS JavaScript library that allows to communicate with multiple payment providers in Angola and abroad",
   "main": "vpos.js",
   "scripts": {
-    "test": "mocha" 
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
