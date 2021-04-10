@@ -142,7 +142,7 @@ module.exports = class Vpos {
     });
   }
 
-  getRequestId(response) {
+  getRequestId({response: response}) {
     if (response.status_code === 202) {
       return response.location.substring(LOCATION);
     } else {
