@@ -10,6 +10,24 @@ const VPOS_ENVIRONMENT = process.env.VPOS_PROFILE;
 const LOCATION = 17;
 
 module.exports = class Vpos {
+  constructor(
+      {
+        environment: environment,
+        token: token,
+        posId: posId,
+        supervisorCard: supervisorCard,
+        paymentCallbackUrl: paymentCallbackUrl,
+        refundCallbackUrl: refundCallbackUrl
+      }
+  ) {
+    this.environment = environment || VPOS_ENVIRONMENT;
+    this.token = token || MERCHANT_VPOS_TOKEN;
+    this.posId = posId || GPO_POS_ID;
+    this.supervisorCard = supervisorCard || GPO_SUPERVISOR_CARD;
+    this.paymentCallbackUrl = paymentCallbackUrl || PAYMENT_CALLBACK_URL;
+    this.refundCallbackUrl = refundCallbackUrl || REFUND_CALLBACK_URL;
+  }
+
   static request() {
 
     return {
@@ -21,24 +39,19 @@ module.exports = class Vpos {
     };
   }
 
-  static setUrl(profile) {
-    if (profile === "PRD") {
-      return "https://api.vpos.ao"
+  host() {
+    if (this.environment === 'PRD') {
+      return 'https://api.vpos.ao'
     } else {
-      return "https://sandbox.vpos.ao"
+      return 'https://sandbox.vpos.ao'
     }
   }
 
-  getTransaction({
-    profile = VPOS_ENVIRONMENT,
-    transactionId,
-    token = MERCHANT_VPOS_TOKEN,
-  }) {
-
+  getTransaction({transactionId: transactionId}) {
     const request = Vpos.request();
-    request.headers['Authorization'] = 'Bearer ' + token;
+    request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.get(Vpos.setUrl(profile) + '/api/v1/transactions/' + transactionId, request)
+    return axios.get(this.host() + '/api/v1/transactions/' + transactionId, request)
     .then(response => {
       return {
         status_code: response.status,
@@ -55,15 +68,11 @@ module.exports = class Vpos {
     });
   }
 
-  getTransactions({
-    profile = VPOS_ENVIRONMENT,
-    token = MERCHANT_VPOS_TOKEN
-  }) {
-
+  getTransactions() {
     const request = Vpos.request();
-    request.headers['Authorization'] = 'Bearer ' + token;
+    request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.get(Vpos.setUrl(profile) + '/api/v1/transactions', request)
+    return axios.get(this.host() + '/api/v1/transactions', request)
     .then(response => {
       return {
         status_code: response.status,
@@ -80,21 +89,14 @@ module.exports = class Vpos {
     });
   }
 
-  newPayment({
-    profile = VPOS_ENVIRONMENT,
-    amount,
-    posId = GPO_POS_ID,
-    customer,
-    callback_url = PAYMENT_CALLBACK_URL,
-    token = MERCHANT_VPOS_TOKEN
-  }) {
-    let body = {type: "payment", pos_id: posId, mobile: customer, amount: amount, callback_url: callback_url}
+  newPayment({amount: amount, customer: customer}) {
+    let body = {type: "payment", pos_id: this.posId, mobile: customer, amount: amount, callback_url: this.paymentCallbackUrl}
 
     let request = Vpos.request();
     request.headers['Idempotency-Key'] = uuidv4();
-    request.headers['Authorization'] = 'Bearer ' + token;
+    request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.post(Vpos.setUrl(profile) + '/api/v1/transactions', body, request)
+    return axios.post(this.host() + '/api/v1/transactions', body, request)
     .then(response => {
       return {
         status_code: response.status,
@@ -111,25 +113,19 @@ module.exports = class Vpos {
     });
   }
 
-  newRefund({
-    profile = VPOS_ENVIRONMENT,
-    parentTransactionId,
-    supervisorCard = GPO_SUPERVISOR_CARD,
-    callbackUrl = REFUND_CALLBACK_URL,
-    token = MERCHANT_VPOS_TOKEN
-  }) {
+  newRefund({parentTransactionId: parentTransactionId}) {
     let body = {
       type: "refund",
       parent_transaction_id: parentTransactionId,
-      supervisor_card: supervisorCard,
-      callback_url: callbackUrl
+      supervisor_card: this.supervisorCard,
+      callback_url: this.refundCallbackUrl
     };
 
     const request = Vpos.request();
     request.headers['Idempotency-Key'] = uuidv4();
-    request.headers['Authorization'] = 'Bearer ' + token;
+    request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.post(Vpos.setUrl(profile) + '/api/v1/transactions', body, request)
+    return axios.post(this.host() + '/api/v1/transactions', body, request)
     .then(response => {
       return {
         status_code: response.status,
@@ -146,7 +142,7 @@ module.exports = class Vpos {
     });
   }
 
-  getRequestId({response}) {
+  getRequestId(response) {
     if (response.status_code === 202) {
       return response.location.substring(LOCATION);
     } else {
@@ -154,16 +150,12 @@ module.exports = class Vpos {
     }
   }
 
-  getRequest({
-    profile = VPOS_ENVIRONMENT,
-    requestId,
-    token = MERCHANT_VPOS_TOKEN
-  }) {
+  getRequest({requestId: requestId}) {
 
     const request = Vpos.request();
-    request.headers['Authorization'] = 'Bearer ' + token;
+    request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.get(Vpos.setUrl(profile) + '/api/v1/requests/' + requestId, request)
+    return axios.get(this.host() + '/api/v1/requests/' + requestId, request)
     .then(response => {
       if (response.status === 200) {
         return {

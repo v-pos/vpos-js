@@ -1,14 +1,12 @@
 # vPOS Javascript
-
-![Node.js CI](https://github.com/nextbss/vpos-js/workflows/Node.js%20CI/badge.svg)
-[![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
+[![Node.js CI](https://github.com/v-pos/vpos-js/actions/workflows/node.js.yml/badge.svg)](https://github.com/v-pos/vpos-js/actions/workflows/node.js.yml)
 
 This javascript library helps you easily interact with the vPOS API,
 Allowing merchants apps/services to request a payment from a client through his/her mobile phone number.
 
 The service currently works for solutions listed below:
 
-EMIS GPO (Multicaixa Express)
+ - EMIS GPO (Multicaixa Express)
 
 Want to know more about how we are empowering merchants in Angola? See our [website](https://vpos.ao)
 
@@ -27,7 +25,7 @@ npm install vpos
 ```
 
 ### Configuration
-This ruby library requires you set up the following environment variables on your machine before
+This javascript library requires you set up the following environment variables on your machine before
 interacting with the API using this library:
 
 | Variable | Description | Required |
@@ -37,7 +35,18 @@ interacting with the API using this library:
 | `MERCHANT_VPOS_TOKEN` | The API token provided by vPOS | true |
 | `PAYMENT_CALLBACK_URL` | The URL that will handle payment notifications | false |
 | `REFUND_CALLBACK_URL` | The URL that will handle refund notifications | false |
-| `VPOS_ENVIRONMENT` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | false |
+| `VPOS_PROFILE` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | false |
+
+or using one of the optional arguments
+
+| Variable | Description | Required |
+| --- | --- | --- |
+| `posId` | The Point of Sale ID provided by EMIS | false |
+| `supervisorCard` | The Supervisor card ID provided by EMIS | false |
+| `token` | The API token provided by vPOS | false |
+| `paymentCallbackUrl` | The URL that will handle payment notifications | false |
+| `refundCallbackUrl` | The URL that will handle refund notifications | false |
+| `environment` | The vPOS environment, leave empty for `sandbox` mode and use `'PRD'` for `production`.  | false |
 
 Don't have this information? [Talk to us](suporte@vpos.ao)
 
@@ -50,7 +59,7 @@ The next section will show the various payment actions that can be performed by 
 This endpoint retrieves all transactions.
 
 ```javascript
-const Vpos = require("vpos")
+const Vpos = require('vpos')
 
 let merchant = new Vpos();
 let transactions = await merchant.getTransactions({});
@@ -60,10 +69,10 @@ let transactions = await merchant.getTransactions({});
 Retrieves a transaction given a valid transaction ID.
 
 ```javascript
-const Vpos = require("vpos")
+const Vpos = require('vpos')
 
 let merchant = new Vpos();
-let response = await merchant.getTransaction({transactionId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
+let response = await merchant.getTransaction({transactionId: '1jYQryG3Qo4nzaOKgJxzWDs25Ht'});
 ```
 
 | Argument | Description | Type |
@@ -75,10 +84,10 @@ Creates a new payment transaction given a valid mobile number associated with a 
 and a valid amount.
 
 ```javascript
-const Vpos = require("vpos")
+const Vpos = require('vpos')
 
 let merchant = new Vpos();
-let payment = await merchant.newPayment({amount: "123.45", customer: "915898553"});
+let payment = await merchant.newPayment({amount: '123.45', customer: '915898553'});
 ```
 
 | Argument | Description | Type |
@@ -90,10 +99,10 @@ let payment = await merchant.newPayment({amount: "123.45", customer: "915898553"
 Given an existing `parent_transaction_id`, request a refund.
 
 ```javascript
-const Vpos = require("vpos")
+const Vpos = require('vpos')
 
 let merchant = new Vpos();
-let response = await merchant.newRefund({parentTransactionId: "1kTFGhJH8i58uD9MdJpMjWnoE"});
+let response = await merchant.newRefund({parentTransactionId: '1kTFGhJH8i58uD9MdJpMjWnoE'});
 ```
 
 | Argument | Description | Type |
@@ -106,19 +115,21 @@ Poll the status of a transaction given a valid `request_id`.
 Note: The `request_id` in this context is essentially the `transaction_id` of an existing request. 
 
 ```javascript
-const Vpos = require("vpos")
+const Vpos = require('vpos')
 
 let merchant = new Vpos();
-let response = await merchant.getRequest({requestId: "1jYQryG3Qo4nzaOKgJxzWDs25Ht"});
+let response = await merchant.getRequest({requestId: '1jYQryG3Qo4nzaOKgJxzWDs25Ht'});
 ```
 ##### Complete `getRequest()` example with additional Context
 
 ```javascript
-const Vpos = require("vpos")
+const Vpos = require('vpos')
 
 let merchant = new Vpos();
-let payment = await merchant.newPayment({amount: "123.45", customer: "915889553"});
+
+let payment = await merchant.newPayment({amount: '123.45', customer: '915889553'});
 refundId = merchant.getRequestId({response: payment})
+
 let response = await merchant.getRequest({requestId: refundId});
 ```
 
