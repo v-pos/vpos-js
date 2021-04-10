@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nextbss/vpos-js.git"
+    "url": "git+https://github.com/v-pos/vpos-js.git"
   },
   "author": "Sergio Maziano",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nextbss/vpos-js/issues"
+    "url": "https://github.com/v-pos/vpos-js/issues"
   },
-  "homepage": "https://github.com/nextbss/vpos-js#readme",
+  "homepage": "https://github.com/v-pos/vpos-js#readme",
   "dependencies": {
     "axios": "^0.21.1",
     "uuid": "^8.3.1"
