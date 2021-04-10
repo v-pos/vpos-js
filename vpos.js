@@ -7,7 +7,8 @@ const PAYMENT_CALLBACK_URL = process.env.PAYMENT_CALLBACK_URL;
 const REFUND_CALLBACK_URL = process.env.REFUND_CALLBACK_URL;
 const MERCHANT_VPOS_TOKEN = process.env.MERCHANT_VPOS_TOKEN;
 const VPOS_ENVIRONMENT = process.env.VPOS_PROFILE;
-const LOCATION = 17;
+const REQUEST_LOCATION = 17;
+const TRANSACTION_LOCATION = 21;
 
 module.exports = class Vpos {
   constructor(
@@ -142,11 +143,11 @@ module.exports = class Vpos {
     });
   }
 
-  getRequestId(response) {
+  getRequestId({response: response}) {
     if (response.status_code === 202) {
-      return response.location.substring(LOCATION);
+      return response.location.substring(REQUEST_LOCATION);
     } else {
-      return response.location.substring(LOCATION);
+      return response.location.substring(TRANSACTION_LOCATION);
     }
   }
 
