@@ -143,41 +143,65 @@ module.exports = class Vpos {
     });
   }
 
-  getRequestId({response: response}) {
+  getRequest({response: response}) {
+    let requestId = '';
     if (response.status_code === 202) {
-      return response.location.substring(REQUEST_LOCATION);
+      requestId = response.location.substring(REQUEST_LOCATION);
     } else {
-      return response.location.substring(TRANSACTION_LOCATION);
+      requestId = response.location.substring(TRANSACTION_LOCATION);
     }
-  }
-
-  getRequest({requestId: requestId}) {
 
     const request = Vpos.request();
     request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.get(this.host() + '/api/v1/requests/' + requestId, request)
-    .then(response => {
-      if (response.status === 200) {
-        return {
-          status_code: response.status,
-          message: response.statusText,
-          data: response.data
-        }
-      } else {
-        return {
-          status_code: response.status,
-          message: response.statusText,
-          location: response.headers.location
-        }
-      }
-    })
-    .catch(error => {
-      return {
-        status_code: error.response.status,
-        message: error.response.statusText,
-        details: error.response.data
-      }
-    });
+    if (response.status_code === 202) {
+      return axios.get(this.host() + '/api/v1/requests/' + requestId, request)
+          .then(response => {
+            if (response.status === 200) {
+              return {
+                status_code: response.status,
+                message: response.statusText,
+                data: response.data
+              }
+            } else {
+              return {
+                status_code: response.status,
+                message: response.statusText,
+                location: response.headers.location
+              }
+            }
+          })
+          .catch(error => {
+            return {
+              status_code: error.response.status,
+              message: error.response.statusText,
+              details: error.response.data
+            }
+          });
+    } else {
+      return axios.get(this.host() + '/api/v1/transactions/' + requestId, request)
+          .then(response => {
+            if (response.status === 200) {
+              return {
+                status_code: response.status,
+                message: response.statusText,
+                data: response.data
+              }
+            } else {
+              return {
+                status_code: response.status,
+                message: response.statusText,
+                location: response.headers.location
+              }
+            }
+          })
+          .catch(error => {
+            return {
+              status_code: error.response.status,
+              message: error.response.statusText,
+              details: error.response.data
+            }
+          });
+    }
   }
 }

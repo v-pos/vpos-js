@@ -97,26 +97,26 @@ describe('vPOS', () => {
   describe('Requests', () => {
     describe('Positives', () => {
       it('should get a running single request status', async () => {
-        let response = await merchant.newPayment({amount: "123.45", customer: "925888553"});
+        let response = await merchant.newPayment({amount: '123.45', customer: '925888553'});
 
-        let refundId = merchant.getRequestId({response: response})
+        let paymentRequest = await merchant.getRequest({response: response});
 
-        let finalResponse = await merchant.getRequest({requestId: refundId});
-
-        assert.strictEqual(finalResponse.status_code, 200);
+        assert.strictEqual(paymentRequest.status_code, 200);
       });
 
       it('should get a completed single request status', async () => {
-        let response = await merchant.getRequest({requestId: '1jYQryG3Qo4nzaOKgJxzWDs25Ht'});
-        assert.strictEqual(response.status_code, 303);
+        let response = await merchant.newPayment({amount: '123.45', customer: '925888553'});
+        assert.strictEqual(response.status_code, 202);
       });
     });
 
     describe('Negatives', () => {
       it('should not get a single request status if token is invalid', async () => {
-        let merchantRequest = new Vpos({token: 'jhfsdfutsdufgs'})
-        let response = await merchantRequest.getRequest({requestId: '1jYQryG3Qo4nzaOKgJxzWDs25Ht'});
-        assert.strictEqual(response.status_code, 401);
+        let secondMerchantRequest = new Vpos({token: 'jhfsdfutsdufgs'})
+        let response = await merchant.newPayment({amount: '123.45', customer: '925888553'});
+
+        let secondResponse = await secondMerchantRequest.getRequest({response: response})
+        assert.strictEqual(secondResponse.status_code, 401);
       });
     });
   });
