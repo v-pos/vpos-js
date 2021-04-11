@@ -1,5 +1,6 @@
 # vPOS Javascript
 [![Node.js CI](https://github.com/v-pos/vpos-js/actions/workflows/node.js.yml/badge.svg)](https://github.com/v-pos/vpos-js/actions/workflows/node.js.yml)
+[![](https://img.shields.io/badge/vPOS-OpenSource-blue.svg)](https://www.vpos.ao)
 
 This javascript library helps you easily interact with the vPOS API,
 Allowing merchants apps/services to request a payment from a client through his/her mobile phone number.
