@@ -1,6 +1,6 @@
 {
   "name": "vpos",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The one stop shop for online payments in Angola, allowing you to process payments requests from EMIS GPO through vPOS.",
   "main": "vpos.js",
   "keywords": [
