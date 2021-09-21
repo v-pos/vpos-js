@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Vpos = require('../vpos.js');
 
-let merchant = new Vpos({environment: 'SBX'});
+let merchant = new Vpos({});
 let refundId = "";
 let refundTransaction = "";
 
@@ -9,7 +9,7 @@ describe('vPOS', () => {
   describe('Payments', () => {
     describe('Positives', () => {
       it('should create a new payment request transaction', async () => {
-        let response = await merchant.newPayment({amount: '123.45', customer: '925888553'});
+        let response = await merchant.newPayment({amount: '123.45', customer: '900000000'});
         assert.strictEqual(response.status_code, 202);
       });
     });
@@ -36,7 +36,10 @@ describe('vPOS', () => {
   describe('Refunds', () => {
     describe('Positives', () => {
       it('should create a new refund request transaction', async () => {
-        let response = await merchant.newRefund({parentTransactionId: '1jYQryG3Qo4nzaOKgJxzWDs25Hv'});
+        let response = await merchant.newPayment({amount: '123.45', customer: '925888553'})
+        let paymentId = await merchant.requestId({response: response});
+
+        response = await merchant.newRefund({parentTransactionId: paymentId});
         assert.strictEqual(response.status_code, 202);
       });
     });
@@ -56,26 +59,18 @@ describe('vPOS', () => {
       it('should not create a new refund request transaction if supervisor_card is invalid', async () => {
         let merchantRefund = new Vpos({supervisorCard: '12345678910111213'});
         let response = await merchantRefund.newRefund({parentTransactionId: '1jYQryG3Qo4nzaOKgJxzWDs25Hv'});
-        assert.strictEqual(response.status_code, 202);
-
-        refundId = response.location.substring(17);
-        refundTransaction = await merchant.getTransaction({transactionId: refundId});
-
-        assert.strictEqual(refundTransaction.data.status, 'rejected')
-        // TODO: This test should have been 2007. Has to be refactored as soon we have the mock server
-        assert.strictEqual(refundTransaction.data.status_reason, 1003)
+        assert.strictEqual(response.status_code, 400);
       });
     });
   });
 
   describe('Transactions', () => {
     describe('Positives', () => {
-      it('should get all transactions', async () => {
-        let response = await merchant.getTransactions();
-        assert.strictEqual(response.status_code, 200);
-      });
       it('should get a single transaction', async () => {
-        let response = await merchant.getTransaction({transactionId: '1jYQryG3Qo4nzaOKgJxzWDs25Ht'});
+        let response = await merchant.newPayment({amount: '123.45', customer: '925888553'})
+        let paymentId = await merchant.requestId({response: response});
+
+        response = await merchant.getTransaction({transactionId: paymentId});
         assert.strictEqual(response.status_code, 200);
       });
     });
@@ -97,15 +92,14 @@ describe('vPOS', () => {
   describe('Requests', () => {
     describe('Positives', () => {
       it('should get a running single request status', async () => {
-        let response = await merchant.newPayment({amount: '123.45', customer: '925888553'});
-
+        let response = await merchant.newPayment({amount: '123.45', customer: '900000000'});
         let paymentRequest = await merchant.getRequest({response: response});
 
         assert.strictEqual(paymentRequest.status_code, 200);
       });
 
       it('should get a completed single request status', async () => {
-        let response = await merchant.newPayment({amount: '123.45', customer: '925888553'});
+        let response = await merchant.newPayment({amount: '123.45', customer: '900000000'});
         assert.strictEqual(response.status_code, 202);
       });
     });
