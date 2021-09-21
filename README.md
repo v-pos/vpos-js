@@ -36,7 +36,6 @@ interacting with the API using this library:
 | `MERCHANT_VPOS_TOKEN` | The API token provided by vPOS | true |
 | `PAYMENT_CALLBACK_URL` | The URL that will handle payment notifications | false |
 | `REFUND_CALLBACK_URL` | The URL that will handle refund notifications | false |
-| `VPOS_PROFILE` | The vPOS environment, leave empty for `sandbox` mode and use `"PRD"` for `production`.  | false |
 
 or using one of the optional arguments
 
@@ -47,7 +46,6 @@ or using one of the optional arguments
 | `token` | The API token provided by vPOS | false |
 | `paymentCallbackUrl` | The URL that will handle payment notifications | false |
 | `refundCallbackUrl` | The URL that will handle refund notifications | false |
-| `environment` | The vPOS environment, leave empty for `sandbox` mode and use `'PRD'` for `production`.  | false |
 
 Don't have this information? [Talk to us](suporte@vpos.ao)
 
@@ -66,14 +64,7 @@ const Vpos = require('vpos')
 let merchant = new Vpos();
 
 // or use optional arguments option
-let merchant = new Vpos({environment: 'PRD', token: 'your_token_here'})
-```
-
-### Get all Transactions
-This endpoint retrieves all transactions.
-
-```javascript
-let transactions = await merchant.getTransactions({});
+let merchant = new Vpos({token: 'your_token_here'})
 ```
 
 ### Get a specific Transaction
