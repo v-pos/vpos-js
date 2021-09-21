@@ -6,14 +6,12 @@ const GPO_SUPERVISOR_CARD = process.env.GPO_SUPERVISOR_CARD;
 const PAYMENT_CALLBACK_URL = process.env.PAYMENT_CALLBACK_URL;
 const REFUND_CALLBACK_URL = process.env.REFUND_CALLBACK_URL;
 const MERCHANT_VPOS_TOKEN = process.env.MERCHANT_VPOS_TOKEN;
-const VPOS_ENVIRONMENT = process.env.VPOS_PROFILE;
 const REQUEST_LOCATION = 17;
 const TRANSACTION_LOCATION = 21;
 
 module.exports = class Vpos {
   constructor(
       {
-        environment: environment,
         token: token,
         posId: posId,
         supervisorCard: supervisorCard,
@@ -21,7 +19,6 @@ module.exports = class Vpos {
         refundCallbackUrl: refundCallbackUrl
       }
   ) {
-    this.environment = environment || VPOS_ENVIRONMENT;
     this.token = token || MERCHANT_VPOS_TOKEN;
     this.posId = posId || GPO_POS_ID;
     this.supervisorCard = supervisorCard || GPO_SUPERVISOR_CARD;
@@ -41,11 +38,7 @@ module.exports = class Vpos {
   }
 
   host() {
-    if (this.environment === 'PRD') {
-      return 'https://api.vpos.ao'
-    } else {
-      return 'https://sandbox.vpos.ao'
-    }
+    return 'https://api.vpos.ao'
   }
 
   getTransaction({transactionId: transactionId}) {
@@ -53,27 +46,6 @@ module.exports = class Vpos {
     request.headers['Authorization'] = 'Bearer ' + this.token;
 
     return axios.get(this.host() + '/api/v1/transactions/' + transactionId, request)
-    .then(response => {
-      return {
-        status_code: response.status,
-        message: response.statusText,
-        data: response.data
-      }
-    })
-    .catch(error => {
-      return {
-        status_code: error.response.status,
-        message: error.response.statusText,
-        details: error.response.data
-      }
-    });
-  }
-
-  getTransactions() {
-    const request = Vpos.request();
-    request.headers['Authorization'] = 'Bearer ' + this.token;
-
-    return axios.get(this.host() + '/api/v1/transactions', request)
     .then(response => {
       return {
         status_code: response.status,
@@ -144,13 +116,7 @@ module.exports = class Vpos {
   }
 
   getRequest({response: response}) {
-    let requestId = '';
-    if (response.status_code === 202) {
-      requestId = response.location.substring(REQUEST_LOCATION);
-    } else {
-      requestId = response.location.substring(TRANSACTION_LOCATION);
-    }
-
+    let requestId = this.requestId({response: response});
     const request = Vpos.request();
     request.headers['Authorization'] = 'Bearer ' + this.token;
 
@@ -202,6 +168,15 @@ module.exports = class Vpos {
               details: error.response.data
             }
           });
+    }
+  }
+
+  requestId({response: response}) {
+    let requestId = '';
+    if (response.status_code === 202) {
+      return requestId = response.location.substring(REQUEST_LOCATION);
+    } else {
+      return requestId = response.location.substring(TRANSACTION_LOCATION);
     }
   }
 }
