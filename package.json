@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/v-pos/vpos-js#readme",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "uuid": "^8.3.1",
     "y18n": ">=4.0.1"
   },
