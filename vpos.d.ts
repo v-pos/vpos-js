@@ -15,7 +15,7 @@ class Vpos {
   supervisorCard: string;
   paymentCallbackUrl: string;
   refundCallbackUrl: string;
-  constructor(token: string, posId: number, supervisorCard: string, paymentCallbackUrl: string, refundCallbackUrl: string){
+  constructor(token?: string, posId?: number, supervisorCard?: string, paymentCallbackUrl?: string, refundCallbackUrl?: string){
     this.token = token;
     this.posId = posId;
     this.supervisorCard = supervisorCard;
