@@ -1,4 +1,4 @@
-export interface newPaymentSucces {
+interface newPaymentSucces {
   status_code: number;
   message: string;
   location: string;
@@ -9,7 +9,7 @@ interface newPaymentError {
   details: string;
 }
 
-export class Vpos {
+class Vpos {
   token: string;
   posId: number;
   supervisorCard: string;
@@ -24,3 +24,5 @@ export class Vpos {
   }
   newPayment(amount: string, customer: string): newPaymentSucces | newPaymentError 
 }
+
+export default Vpos
