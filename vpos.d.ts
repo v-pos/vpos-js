@@ -9,14 +9,18 @@ interface newPaymentError {
   details: string;
 }
 
-export interface vPosConfig {
+export class Vpos {
   token: string;
   posId: number;
   supervisorCard: string;
   paymentCallbackUrl: string;
-  refundCallbackUrl: strin;
-}
-export class Vpos {
-  constructor(config: vPosConfig);
+  refundCallbackUrl: string;
+  constructor(token: string, posId: number, supervisorCard: string, paymentCallbackUrl: string, refundCallbackUrl: string){
+    this.token = token;
+    this.posId = posId;
+    this.supervisorCard = supervisorCard;
+    this.paymentCallbackUrl = paymentCallbackUrl;
+    this.refundCallbackUrl = refundCallbackUrl;
+  }
   newPayment(amount: string, customer: string): newPaymentSucces | newPaymentError 
 }
