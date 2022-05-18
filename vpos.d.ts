@@ -3,26 +3,32 @@ export interface newPaymentSucces {
   message: string;
   location: string;
 }
-export interface newPaymentError {
+export interface vPosErrorRequest {
   status_code: number;
   message: string;
-  details: string;
+  details: object;
+}
+
+export interface getTransactionSucess{
+  status_code: number;
+  message: string;
+  data: object;
+}
+
+export interface VPosConfig {
+  token: string | undefined;
+  posId: number | undefined;
+  supervisorCard: number | undefined;
+  paymentCallbackUrl: string | undefined;
+  refundCallbackUrl: string | undefined;
 }
 
 export class Vpos {
-  token: string;
-  posId: number;
-  supervisorCard: string;
-  paymentCallbackUrl: string;
-  refundCallbackUrl: string;
-  constructor(token?: string, posId?: number, supervisorCard?: string, paymentCallbackUrl?: string, refundCallbackUrl?: string) {
-    this.token = token;
-    this.posId = posId;
-    this.supervisorCard = supervisorCard;
-    this.paymentCallbackUrl = paymentCallbackUrl;
-    this.refundCallbackUrl = refundCallbackUrl;
-  }
-  newPayment(amount: string, customer: string): newPaymentSucces | newPaymentError
+  constructor(config: VPosConfig ) 
+  newPayment({amount: string, customer: string}): Promisse<newPaymentSucces> | Promisse<vPosErrorRequest>
+  getTransaction({transactionId: string}): Promisse<getTransactionSucess> | Promisse<vPosErrorRequest>
 }
+
+
 
 export default Vpos
