@@ -26,8 +26,12 @@ module.exports = class Vpos {
     this.refundCallbackUrl = refundCallbackUrl || REFUND_CALLBACK_URL;
   }
 
-  static request() {
+  static endpoints = {
+    transactions: '/api/v1/transactions/',
+    requests: '/api/v1/requests/'
+  }
 
+  static request() {
     return {
       headers: {
         'Content-type': 'application/json',
@@ -45,7 +49,7 @@ module.exports = class Vpos {
     const request = Vpos.request();
     request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.get(this.host() + '/api/v1/transactions/' + transactionId, request)
+    return axios.get(this.host() + Vpos.endpoints.transactions + transactionId, request)
     .then(response => {
       return {
         status_code: response.status,
@@ -63,13 +67,13 @@ module.exports = class Vpos {
   }
 
   newPayment({amount: amount, customer: customer}) {
-    let body = {type: "payment", pos_id: this.posId, mobile: customer, amount: amount, callback_url: this.paymentCallbackUrl}
+    const body = {type: "payment", pos_id: this.posId, mobile: customer, amount: amount, callback_url: this.paymentCallbackUrl}
 
-    let request = Vpos.request();
+    const request = Vpos.request();
     request.headers['Idempotency-Key'] = uuidv4();
     request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.post(this.host() + '/api/v1/transactions', body, request)
+    return axios.post(this.host() + Vpos.endpoints.transactions, body, request)
     .then(response => {
       return {
         status_code: response.status,
@@ -87,7 +91,7 @@ module.exports = class Vpos {
   }
 
   newRefund({parentTransactionId: parentTransactionId}) {
-    let body = {
+    const body = {
       type: "refund",
       parent_transaction_id: parentTransactionId,
       supervisor_card: this.supervisorCard,
@@ -98,7 +102,7 @@ module.exports = class Vpos {
     request.headers['Idempotency-Key'] = uuidv4();
     request.headers['Authorization'] = 'Bearer ' + this.token;
 
-    return axios.post(this.host() + '/api/v1/transactions', body, request)
+    return axios.post(this.host() + Vpos.endpoints.transactions, body, request)
     .then(response => {
       return {
         status_code: response.status,
@@ -116,12 +120,12 @@ module.exports = class Vpos {
   }
 
   getRequest({response: response}) {
-    let requestId = this.requestId({response: response});
+    const requestId = this.requestId({response: response});
     const request = Vpos.request();
     request.headers['Authorization'] = 'Bearer ' + this.token;
 
     if (response.status_code === 202) {
-      return axios.get(this.host() + '/api/v1/requests/' + requestId, request)
+      return axios.get(this.host() + Vpos.endpoints.requests + requestId, request)
           .then(response => {
             if (response.status === 200) {
               return {
@@ -145,7 +149,7 @@ module.exports = class Vpos {
             }
           });
     } else {
-      return axios.get(this.host() + '/api/v1/transactions/' + requestId, request)
+      return axios.get(this.host() + Vpos.endpoints.transactions + requestId, request)
           .then(response => {
             if (response.status === 200) {
               return {
@@ -172,7 +176,6 @@ module.exports = class Vpos {
   }
 
   requestId({response: response}) {
-    let requestId = '';
     if (response.status_code === 202) {
       return requestId = response.location.substring(REQUEST_LOCATION);
     } else {
